@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading;
 
 namespace SMAModbusConnector.TestConsole
@@ -33,7 +34,7 @@ namespace SMAModbusConnector.TestConsole
 
             connector.StartDataChange((deviceId, result) =>
             {
-                // Do something
+                Console.WriteLine(result.FriendlyDescription);
             });
 
             var mre = new ManualResetEvent(false);

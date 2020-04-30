@@ -35,13 +35,15 @@ namespace SMAModbusConnector
 
         public Language PreferedDescriptionLanguage { get; set; } = Language.English;
 
+        public bool ConsoleOutEnabled { get; set; } = false;
+
         internal Dictionary<Guid, DeviceRegistration> Devices { get; } = new Dictionary<Guid, DeviceRegistration>();
 
         internal static IModbusConnectionFactory ModbusConnectionFactory { get; set; } = new ModbusConnectionFactory();
 
         public bool TryRegisterDevice(byte unit, IPAddress address, out Guid id)
         {
-            Console.WriteLine($"Register device with IP-Adress {address} ...");
+            WriteLineToConsole($"Register device with IP-Adress {address} ...");
             id = Guid.Empty;
 
             try
@@ -57,7 +59,7 @@ namespace SMAModbusConnector
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                WriteLineToConsole(ex.Message);
             }
 
             return false;
@@ -135,7 +137,7 @@ namespace SMAModbusConnector
 
         public Result GetDataForAddress(Guid deviceId, RegisterAddress registerAddress)
         {
-            Console.WriteLine($"Get data for register {registerAddress.Register} for device {deviceId} ...");
+            WriteLineToConsole($"Get data for register {registerAddress.Register} for device {deviceId} ...");
 
             if (!registerAddress.Descriptions.Any())
             {
@@ -145,7 +147,7 @@ namespace SMAModbusConnector
             var deviceFound = Devices.TryGetValue(deviceId, out var deviceRegistration);
             if (!deviceFound)
             {
-                Console.WriteLine($"\tdevice not found. Use TryRegisterDevice to add a device.");
+                WriteLineToConsole("\tDevice not found. Use TryRegisterDevice to add a device.");
                 throw new DeviceNotFoundException();
             }
 
@@ -167,11 +169,21 @@ namespace SMAModbusConnector
                     throw new ArgumentOutOfRangeException();
             }
 
-            Console.WriteLine("");
-            Console.WriteLine(result);
-            Console.WriteLine("");
+            WriteLineToConsole("");
+            WriteLineToConsole(result.ToString());
+            WriteLineToConsole("");
 
             return result;
+        }
+
+        private void WriteLineToConsole(string text)
+        {
+            if (!ConsoleOutEnabled)
+            {
+                return;
+            }
+
+            Console.WriteLine(text);
         }
     }
 }
