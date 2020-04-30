@@ -56,6 +56,6 @@ connector.StartDataChange((deviceId, result) =>
   // Do something
 });
 ```
-
+ 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
