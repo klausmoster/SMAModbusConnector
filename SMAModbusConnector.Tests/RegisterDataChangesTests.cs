@@ -8,6 +8,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SMAModbusConnector.Exceptions;
 using SMAModbusConnector.ModbusConnection;
+using SMAModbusConnector.Models;
 using SMAModbusConnector.RegisterRead;
 
 namespace SMAModbusConnector.Tests
@@ -17,10 +18,10 @@ namespace SMAModbusConnector.Tests
     public class After_starting_the_listener_for_data_changes
     {
         private readonly RegisterAddress _register =
-            new RegisterAddress(0, DataType.S32, new RegisterDescription("en", "Description 1"));
+            new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description 1"));
 
         private readonly RegisterAddress _register2 =
-            new RegisterAddress(1, DataType.U32, new RegisterDescription("en", "Description 2"));
+            new RegisterAddress(1, DataType.U32, new RegisterDescription(Language.English, "Description 2"));
 
         [Test]
         public void An_exception_throws_when_no_register_address_is_added_yet()
@@ -116,9 +117,7 @@ namespace SMAModbusConnector.Tests
 
             var mre = new ManualResetEvent(false);
 
-            connector.StartDataChange((deviceId, result) =>
-            {
-            });
+            connector.StartDataChange((deviceId, result) => { });
 
             // Wait 2 seconds to receive at least one call
             mre.WaitOne(2000);

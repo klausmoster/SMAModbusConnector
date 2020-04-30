@@ -4,6 +4,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SMAModbusConnector.Exceptions;
 using SMAModbusConnector.ModbusConnection;
+using SMAModbusConnector.Models;
 using SMAModbusConnector.RegisterRead;
 
 namespace SMAModbusConnector.Tests
@@ -29,7 +30,7 @@ namespace SMAModbusConnector.Tests
             Assert.DoesNotThrow(() =>
                 connector.AddRegisterAddressForDataChanges(
                     id,
-                    new RegisterAddress(0, DataType.S32, new RegisterDescription("en", "Description"))));
+                    new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description"))));
         }
 
         [Test]
@@ -45,12 +46,12 @@ namespace SMAModbusConnector.Tests
 
             Assert.Throws<DeviceNotFoundException>(() =>
                 connector.AddRegisterAddressForDataChanges(Guid.NewGuid(),
-                    new RegisterAddress(0, DataType.S32, new RegisterDescription("en", "Description"))));
+                    new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description"))));
 
             Assert.DoesNotThrow(() =>
                 connector.AddRegisterAddressForDataChanges(
                     id,
-                    new RegisterAddress(0, DataType.S32, new RegisterDescription("en", "Description"))));
+                    new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description"))));
         }
     }
 }

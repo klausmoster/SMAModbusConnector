@@ -5,6 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using SMAModbusConnector.Exceptions;
 using SMAModbusConnector.ModbusConnection;
+using SMAModbusConnector.Models;
 using SMAModbusConnector.RegisterRead;
 
 namespace SMAModbusConnector.Tests
@@ -14,7 +15,7 @@ namespace SMAModbusConnector.Tests
     public class When_reading_the_value_of_an_register
     {
         private readonly RegisterAddress _registerAddress =
-            new RegisterAddress(12345, DataType.S32, new RegisterDescription("en", "Description"));
+            new RegisterAddress(12345, DataType.S32, new RegisterDescription(Language.English, "Description"));
 
         [Test]
         public void A_device_must_be_registered()

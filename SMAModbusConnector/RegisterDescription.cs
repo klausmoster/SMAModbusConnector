@@ -1,11 +1,13 @@
+using SMAModbusConnector.Models;
+
 namespace SMAModbusConnector
 {
     public class RegisterDescription
     {
-        public string Language { get; }
+        public Language Language { get; }
         public string Description { get; }
 
-        public RegisterDescription(string language, string description)
+        public RegisterDescription(Language language, string description)
         {
             Language = language;
             Description = description;
