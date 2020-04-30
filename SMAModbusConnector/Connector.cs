@@ -33,6 +33,8 @@ namespace SMAModbusConnector
         private readonly Dictionary<Guid, List<RegisterAddress>> _registeredAddresses =
             new Dictionary<Guid, List<RegisterAddress>>();
 
+        public Language PreferedDescriptionLanguage { get; set; } = Language.English;
+
         internal Dictionary<Guid, DeviceRegistration> Devices { get; } = new Dictionary<Guid, DeviceRegistration>();
 
         internal static IModbusConnectionFactory ModbusConnectionFactory { get; set; } = new ModbusConnectionFactory();
@@ -108,7 +110,8 @@ namespace SMAModbusConnector
 
                     foreach (var key in Devices.Keys)
                     {
-                        var modbusDataChangeCountResult = GetDataForAddress(key, RegisterAddresses.Register_ModbusDataChangeCount_30007);
+                        var modbusDataChangeCountResult =
+                            GetDataForAddress(key, RegisterAddresses.Register_ModbusDataChangeCount_30007);
                         var deviceInformation = Devices[key];
 
                         if (modbusDataChangeCountResult.Value == deviceInformation.ModbusDataChangeCount)
@@ -153,12 +156,12 @@ namespace SMAModbusConnector
                 case DataType.S32:
                     var s32Result =
                         deviceRegistration.ReaderReader.ReadS32(deviceRegistration.Unit, registerAddress.Register);
-                    result = new Result(deviceId, registerAddress, s32Result);
+                    result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, s32Result);
                     break;
                 case DataType.U32:
                     var u32Result =
                         deviceRegistration.ReaderReader.ReadU32(deviceRegistration.Unit, registerAddress.Register);
-                    result = new Result(deviceId, registerAddress, (int) u32Result);
+                    result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, (int) u32Result);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

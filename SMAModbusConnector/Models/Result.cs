@@ -10,11 +10,26 @@ namespace SMAModbusConnector.Models
         public RegisterAddress RegisterAddress { get; }
         public int Value { get; }
 
-        public Result(Guid id, RegisterAddress registerAddress, int value)
+        public string FriendlyDescription { get; private set; }
+
+        internal Result(Guid id, RegisterAddress registerAddress, Language language, int value)
         {
             Id = id;
             RegisterAddress = registerAddress;
             Value = value;
+
+            SetFriendlyDescription(language);
+        }
+
+        private void SetFriendlyDescription(Language language)
+        {
+            var description = RegisterAddress.Descriptions.FirstOrDefault(d => d.Language == language);
+            if (description == null)
+            {
+                description = RegisterAddress.Descriptions.First();
+            }
+
+            FriendlyDescription = $"{description.Description} ({RegisterAddress.Register}) = {Value}";
         }
 
         public override string ToString()
