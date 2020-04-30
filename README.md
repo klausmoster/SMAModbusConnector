@@ -1,6 +1,6 @@
 # SMAModbusConnector
 
-A connector, to retrieve data via Modbus TCP from your SMA devices (Sunny Tripower or Sunny Boy Storage for example).
+This is a connector to retrieve data via Modbus TCP from your SMA devices (Sunny Tripower or Sunny Boy Storage, for example).
 
 ## Usage
 
@@ -19,7 +19,7 @@ connector.TryRegisterDevice(3, ipSunnyTripower, out var sunnyTripowerId);
 connector.TryRegisterDevice(3, ipSunnyBoyStorage, out var sunnyBoyStorageId);
 ```
 
-You are able to retreive a single value (You will find many predefined register addresses in RegisterAddresses. 
+You can retrieve a single value (you will find many predefined register addresses in RegisterAddresses. 
 
 ```csharp
 var batteryChargeInPercent = connector.GetDataForAddress
