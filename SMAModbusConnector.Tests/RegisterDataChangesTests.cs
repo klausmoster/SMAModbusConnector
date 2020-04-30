@@ -32,6 +32,8 @@ namespace SMAModbusConnector.Tests
             Connector.ModbusConnectionFactory = factory;
             var connector = new Connector();
 
+            connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.1"), out _);
+
             Assert.Throws<NoRegisterAddressesAddedException>(() => { connector.StartDataChange(null); });
         }
 
