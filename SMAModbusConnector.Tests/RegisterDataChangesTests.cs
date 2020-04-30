@@ -18,10 +18,12 @@ namespace SMAModbusConnector.Tests
     public class After_starting_the_listener_for_data_changes
     {
         private readonly RegisterAddress _register =
-            new RegisterAddress(0, RegisterAddressType.S32, new RegisterDescription(Language.English, "Description 1"));
+            new RegisterAddress(0, RegisterAddressType.S32, RegisterAddressFormat.FIX0,
+                new RegisterDescription(Language.English, "Description 1"));
 
         private readonly RegisterAddress _register2 =
-            new RegisterAddress(1, RegisterAddressType.U32, new RegisterDescription(Language.English, "Description 2"));
+            new RegisterAddress(1, RegisterAddressType.U32, RegisterAddressFormat.FIX0,
+                new RegisterDescription(Language.English, "Description 2"));
 
         [Test]
         public void An_exception_throws_when_no_register_address_is_added_yet()

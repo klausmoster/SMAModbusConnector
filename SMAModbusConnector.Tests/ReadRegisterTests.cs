@@ -15,7 +15,8 @@ namespace SMAModbusConnector.Tests
     public class When_reading_the_value_of_an_register
     {
         private readonly RegisterAddress _registerAddress =
-            new RegisterAddress(12345, RegisterAddressType.S32, new RegisterDescription(Language.German, "Beschreibung"),
+            new RegisterAddress(12345, RegisterAddressType.S32, RegisterAddressFormat.FIX0,
+                new RegisterDescription(Language.German, "Beschreibung"),
                 new RegisterDescription(Language.English, "Description"));
 
         [Test]
@@ -51,7 +52,8 @@ namespace SMAModbusConnector.Tests
             connector.TryRegisterDevice(1, IPAddress.Any, out var id);
 
             Assert.Throws<MissingDescriptionAttributeException>(() =>
-                connector.GetDataForAddress(id, new RegisterAddress(12345, RegisterAddressType.S32)));
+                connector.GetDataForAddress(id,
+                    new RegisterAddress(12345, RegisterAddressType.S32, RegisterAddressFormat.FIX0)));
 
             Assert.DoesNotThrow(() =>
                 connector.GetDataForAddress(id, _registerAddress));
@@ -137,7 +139,7 @@ namespace SMAModbusConnector.Tests
 
             connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.1"), out var id);
 
-            var registerAddress = new RegisterAddress(12345, RegisterAddressType.S32,
+            var registerAddress = new RegisterAddress(12345, RegisterAddressType.S32, RegisterAddressFormat.FIX0,
                 new RegisterDescription(Language.English, "Description"));
 
             var result = connector.GetDataForAddress(id, registerAddress);

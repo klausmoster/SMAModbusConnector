@@ -8,11 +8,11 @@ namespace SMAModbusConnector.Models
     {
         public Guid Id { get; }
         public RegisterAddress RegisterAddress { get; }
-        public int Value { get; }
+        public object Value { get; }
 
         public string FriendlyDescription { get; private set; }
 
-        internal Result(Guid id, RegisterAddress registerAddress, Language language, int value)
+        internal Result(Guid id, RegisterAddress registerAddress, Language language, object value)
         {
             Id = id;
             RegisterAddress = registerAddress;

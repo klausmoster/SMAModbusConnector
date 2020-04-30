@@ -17,7 +17,7 @@ namespace SMAModbusConnector
         public byte Unit { get; }
         public IModbusConnection ModbusConnection { get; }
         public RegisterReader ReaderReader { get; }
-        public int ModbusDataChangeCount { get; set; }
+        public long ModbusDataChangeCount { get; set; }
 
         public DeviceRegistration(byte unit, IModbusConnection modbusConnection, RegisterReader readerReader)
         {
@@ -116,12 +116,12 @@ namespace SMAModbusConnector
                             GetDataForAddress(key, RegisterAddresses.Register_ModbusDataChangeCount_30007);
                         var deviceInformation = Devices[key];
 
-                        if (modbusDataChangeCountResult.Value == deviceInformation.ModbusDataChangeCount)
+                        if (modbusDataChangeCountResult.Value.Equals(deviceInformation.ModbusDataChangeCount))
                         {
                             continue;
                         }
 
-                        deviceInformation.ModbusDataChangeCount = modbusDataChangeCountResult.Value;
+                        deviceInformation.ModbusDataChangeCount = (long) modbusDataChangeCountResult.Value;
                         if (_registeredAddresses.TryGetValue(key, out var registerAddresses))
                         {
                             foreach (var registerAddress in registerAddresses)
@@ -153,17 +153,19 @@ namespace SMAModbusConnector
 
             Result result;
 
-            switch (registerAddress.RegisterAddressType)
+            switch (registerAddress.Type)
             {
                 case RegisterAddressType.S32:
                     var s32Result =
                         deviceRegistration.ReaderReader.ReadS32(deviceRegistration.Unit, registerAddress.Register);
-                    result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, s32Result);
+                    var s32Value = ParseResultForValue(s32Result, registerAddress.Format);
+                    result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, s32Value);
                     break;
                 case RegisterAddressType.U32:
                     var u32Result =
                         deviceRegistration.ReaderReader.ReadU32(deviceRegistration.Unit, registerAddress.Register);
-                    result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, (int) u32Result);
+                    var u32Value = ParseResultForValue(u32Result, registerAddress.Format);
+                    result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, u32Value);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -174,6 +176,28 @@ namespace SMAModbusConnector
             WriteLineToConsole("");
 
             return result;
+        }
+
+        private object ParseResultForValue(long value, RegisterAddressFormat format)
+        {
+            switch (format)
+            {
+                case RegisterAddressFormat.RAW:
+                    return value;
+                case RegisterAddressFormat.FIX0:
+                    return value;
+                case RegisterAddressFormat.FIX2:
+                    return value / 100.0;
+                case RegisterAddressFormat.ENUM:
+                    break;
+                case RegisterAddressFormat.TEMP:
+                    return value / 10.0;
+                default:
+                    WriteLineToConsole($"Unsupported RegisterAddresFormat {format}");
+                    return value;
+            }
+
+            return value;
         }
 
         private void WriteLineToConsole(string text)

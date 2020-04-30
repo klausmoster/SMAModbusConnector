@@ -20,6 +20,8 @@ namespace SMAModbusConnector.TestConsole
             // 3. Receive a single value
             var batteryChargeInPercent = connector.GetDataForAddress(sunnyBoyStorageId,
                 RegisterAddresses.Register_BatteryChargeInPercent_30845);
+            var batteryVoltage = connector.GetDataForAddress(sunnyBoyStorageId,
+                RegisterAddresses.Register_BatteryVoltageInV_30851);
 
             // 4. Register multipe register addresses to get periodical data changes
             connector.AddRegisterAddressForDataChanges(sunnyTripowerId,
@@ -28,14 +30,13 @@ namespace SMAModbusConnector.TestConsole
             connector.AddRegisterAddressForDataChanges(sunnyBoyStorageId,
                 RegisterAddresses.Register_BatteryChargeInPercent_30845,
                 RegisterAddresses.Register_BatteryCapacityInPercent_30847,
-                RegisterAddresses.Register_BatteryTemperatureInC_30849);
+                RegisterAddresses.Register_BatteryTemperatureInC_30849,
+                RegisterAddresses.Register_BatteryVoltageInV_30851,
+                RegisterAddresses.Register_NumberOfFullChargesOfTheBattery_31069);
 
             // 5. Start data change
 
-            connector.StartDataChange((deviceId, result) =>
-            {
-                Console.WriteLine(result.FriendlyDescription);
-            });
+            connector.StartDataChange((deviceId, result) => { Console.WriteLine(result.FriendlyDescription); });
 
             var mre = new ManualResetEvent(false);
             mre.WaitOne();
