@@ -153,14 +153,14 @@ namespace SMAModbusConnector
 
             Result result;
 
-            switch (registerAddress.DataType)
+            switch (registerAddress.RegisterAddressType)
             {
-                case DataType.S32:
+                case RegisterAddressType.S32:
                     var s32Result =
                         deviceRegistration.ReaderReader.ReadS32(deviceRegistration.Unit, registerAddress.Register);
                     result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, s32Result);
                     break;
-                case DataType.U32:
+                case RegisterAddressType.U32:
                     var u32Result =
                         deviceRegistration.ReaderReader.ReadU32(deviceRegistration.Unit, registerAddress.Register);
                     result = new Result(deviceId, registerAddress, PreferedDescriptionLanguage, (int) u32Result);

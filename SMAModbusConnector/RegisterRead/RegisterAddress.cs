@@ -3,13 +3,13 @@ namespace SMAModbusConnector.RegisterRead
     public class RegisterAddress
     {
         public ushort Register { get; }
-        public DataType DataType { get; }
+        public RegisterAddressType RegisterAddressType { get; }
         public RegisterDescription[] Descriptions { get; }
 
-        public RegisterAddress(ushort register, DataType dataType, params RegisterDescription[] descriptions)
+        public RegisterAddress(ushort register, RegisterAddressType registerAddressType, params RegisterDescription[] descriptions)
         {
             Register = register;
-            DataType = dataType;
+            RegisterAddressType = registerAddressType;
             Descriptions = descriptions;
         }
     }

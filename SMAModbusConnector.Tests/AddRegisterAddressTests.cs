@@ -25,12 +25,12 @@ namespace SMAModbusConnector.Tests
             connector.TryRegisterDevice(3, IPAddress.Any, out var id);
 
             Assert.Throws<MissingDescriptionAttributeException>(() =>
-                connector.AddRegisterAddressForDataChanges(id, new RegisterAddress(0, DataType.S32)));
+                connector.AddRegisterAddressForDataChanges(id, new RegisterAddress(0, RegisterAddressType.S32)));
 
             Assert.DoesNotThrow(() =>
                 connector.AddRegisterAddressForDataChanges(
                     id,
-                    new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description"))));
+                    new RegisterAddress(0, RegisterAddressType.S32, new RegisterDescription(Language.English, "Description"))));
         }
 
         [Test]
@@ -46,12 +46,12 @@ namespace SMAModbusConnector.Tests
 
             Assert.Throws<DeviceNotFoundException>(() =>
                 connector.AddRegisterAddressForDataChanges(Guid.NewGuid(),
-                    new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description"))));
+                    new RegisterAddress(0, RegisterAddressType.S32, new RegisterDescription(Language.English, "Description"))));
 
             Assert.DoesNotThrow(() =>
                 connector.AddRegisterAddressForDataChanges(
                     id,
-                    new RegisterAddress(0, DataType.S32, new RegisterDescription(Language.English, "Description"))));
+                    new RegisterAddress(0, RegisterAddressType.S32, new RegisterDescription(Language.English, "Description"))));
         }
     }
 }
