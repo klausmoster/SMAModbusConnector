@@ -18,14 +18,27 @@ namespace SMAModbusConnector.TestConsole
             connector.TryRegisterDevice(3, ipSunnyBoyStorage, out var sunnyBoyStorageId);
 
             // 3. Receive a single value
+
+            var batteryCurrentInA = connector.GetDataForAddress(sunnyBoyStorageId,
+                RegisterAddresses.Register_BatteryCurrentInAmpere_30843);
+            var batteryVoltageInV = connector.GetDataForAddress(sunnyBoyStorageId,
+                RegisterAddresses.Register_BatteryVoltageInV_30851);
+            var betriebsstatus = connector.GetDataForAddress(sunnyBoyStorageId,
+                RegisterAddresses.Register_Betriebsstatus_30955);
+
             var batteryChargeInPercent = connector.GetDataForAddress(sunnyBoyStorageId,
                 RegisterAddresses.Register_BatteryChargeInPercent_30845);
-            var batteryVoltage = connector.GetDataForAddress(sunnyBoyStorageId,
-                RegisterAddresses.Register_BatteryVoltageInV_30851);
 
-            // 4. Register multipe register addresses to get periodical data changes
-            connector.AddRegisterAddressForDataChanges(sunnyTripowerId,
-                RegisterAddresses.Register_CurrentSelfConsumptionInW_30871);
+            var powerGridFeedIn =
+                connector.GetDataForAddress(sunnyTripowerId, RegisterAddresses.Register_PowerGridFeedInInW_30867);
+
+            // -> Calculating the battery power
+
+            var powerInKw = (double) batteryCurrentInA.Value * (double) batteryVoltageInV.Value;
+            if (betriebsstatus.Value.ToString() == "2293")
+            {
+                powerInKw = powerInKw * -1;
+            }
 
             connector.AddRegisterAddressForDataChanges(sunnyBoyStorageId,
                 RegisterAddresses.Register_BatteryChargeInPercent_30845,
