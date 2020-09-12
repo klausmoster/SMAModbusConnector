@@ -6,6 +6,7 @@ namespace SMAModbusConnector.RegisterRead
         RAW,
         FIX0,
         FIX2,
+        FIX3,
         ENUM,
         TEMP
     }

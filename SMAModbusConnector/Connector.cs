@@ -185,9 +185,11 @@ namespace SMAModbusConnector
                 case RegisterAddressFormat.RAW:
                     return value;
                 case RegisterAddressFormat.FIX0:
-                    return value;
+                    return Math.Max(value, 0);
                 case RegisterAddressFormat.FIX2:
-                    return value / 100.0;
+                    return Math.Max(value / 100.0, 0);
+                case RegisterAddressFormat.FIX3:
+                    return Math.Max(value / 1000.0, 0);
                 case RegisterAddressFormat.ENUM:
                     break;
                 case RegisterAddressFormat.TEMP:

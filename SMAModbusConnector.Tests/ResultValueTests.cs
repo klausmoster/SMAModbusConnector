@@ -74,6 +74,35 @@ namespace SMAModbusConnector.Tests
         }
 
         /// <summary>
+        /// 6386 -> 6.386 as FIX3
+        /// </summary>
+        [Test]
+        public void FIX3_is_supported()
+        {
+            var bytes = new Span<byte>(new byte[]
+            {
+                0, 0, 24, 242
+            }).ToArray();
+
+            var modbusConnection = Substitute.For<IModbusConnection>();
+            modbusConnection.Read(Arg.Any<byte>(), Arg.Any<ushort>()).Returns(bytes);
+
+            var factory = Substitute.For<IModbusConnectionFactory>();
+            factory.GetConnection().Returns(modbusConnection);
+
+            var address = new RegisterAddress(12345, RegisterAddressType.S32, RegisterAddressFormat.FIX3,
+                new RegisterDescription(Language.English, "Description"));
+
+            Connector.ModbusConnectionFactory = factory;
+            var connector = new Connector();
+            connector.TryRegisterDevice(1, IPAddress.Any, out var id);
+
+            var result = connector.GetDataForAddress(id, address);
+            result.Value.GetType().Should().Be(typeof(double));
+            result.Value.Should().Be(6.386);
+        }
+
+        /// <summary>
         /// 443 -> 44.3 as TEMP
         /// </summary>
         [Test]
