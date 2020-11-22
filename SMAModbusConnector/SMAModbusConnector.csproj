@@ -8,6 +8,7 @@
         <Authors>Klaus Moster</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>A Modbus Connector for SMA devices</Description>
+        <PackageVersion>1.2.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
