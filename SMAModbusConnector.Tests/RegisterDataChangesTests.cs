@@ -55,7 +55,7 @@ namespace SMAModbusConnector.Tests
         }
 
         [Test]
-        public async Task The_connector_queries_every_device_for_changes_every_second()
+        public async Task The_connector_queries_every_device_for_changes_for_the_configured_time()
         {
             var bytes = new Span<byte>(new byte[]
             {
@@ -78,7 +78,10 @@ namespace SMAModbusConnector.Tests
 
             Connector.ModbusConnectionFactory = factory;
 
-            var connector = new Connector();
+            var connector = new Connector
+            {
+                DataChangeIntervalInSeconds = 1
+            };
             connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.1"), out var id1);
             connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.2"), out var id2);
 
@@ -109,7 +112,10 @@ namespace SMAModbusConnector.Tests
 
             Connector.ModbusConnectionFactory = factory;
 
-            var connector = new Connector();
+            var connector = new Connector
+            {
+                DataChangeIntervalInSeconds = 1
+            };
             connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.1"), out var id);
 
             // Ensure, that the last change result is zero at start
@@ -143,7 +149,10 @@ namespace SMAModbusConnector.Tests
 
             Connector.ModbusConnectionFactory = factory;
 
-            var connector = new Connector();
+            var connector = new Connector
+            {
+                DataChangeIntervalInSeconds = 1
+            };
             connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.1"), out var id1);
             connector.TryRegisterDevice(3, IPAddress.Parse("192.168.1.2"), out var id2);
 

@@ -37,6 +37,8 @@ namespace SMAModbusConnector
 
         public bool ConsoleOutEnabled { get; set; } = false;
 
+        public int DataChangeIntervalInSeconds { get; set; } = 5000;
+
         internal Dictionary<Guid, DeviceRegistration> Devices { get; } = new Dictionary<Guid, DeviceRegistration>();
 
         internal static IModbusConnectionFactory ModbusConnectionFactory { get; set; } = new ModbusConnectionFactory();
@@ -106,7 +108,7 @@ namespace SMAModbusConnector
 
                 while (true)
                 {
-                    await Task.Delay(1000).ConfigureAwait(false);
+                    await Task.Delay(DataChangeIntervalInSeconds * 1000).ConfigureAwait(false);
 
                     // 1. Query for changes
 
