@@ -37,7 +37,7 @@ namespace SMAModbusConnector
 
         public bool ConsoleOutEnabled { get; set; } = false;
 
-        public int DataChangeIntervalInSeconds { get; set; } = 5000;
+        public int DataChangeIntervalInSeconds { get; set; } = 5;
 
         internal Dictionary<Guid, DeviceRegistration> Devices { get; } = new Dictionary<Guid, DeviceRegistration>();
 
