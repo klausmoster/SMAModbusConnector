@@ -39,6 +39,8 @@ namespace SMAModbusConnector
 
         public int DataChangeIntervalInSeconds { get; set; } = 5;
 
+        public bool QueryValuesOnlyIfModubusDataChangeCountChanged { get; set; } = false;
+
         internal Dictionary<Guid, DeviceRegistration> Devices { get; } = new Dictionary<Guid, DeviceRegistration>();
 
         internal static IModbusConnectionFactory ModbusConnectionFactory { get; set; } = new ModbusConnectionFactory();
@@ -118,7 +120,8 @@ namespace SMAModbusConnector
                             GetDataForAddress(key, RegisterAddresses.Register_ModbusDataChangeCount_30007);
                         var deviceInformation = Devices[key];
 
-                        if (modbusDataChangeCountResult.Value.Equals(deviceInformation.ModbusDataChangeCount))
+                        if (QueryValuesOnlyIfModubusDataChangeCountChanged &&
+                            modbusDataChangeCountResult.Value.Equals(deviceInformation.ModbusDataChangeCount))
                         {
                             continue;
                         }
