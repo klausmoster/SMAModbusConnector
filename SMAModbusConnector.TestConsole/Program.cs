@@ -13,7 +13,10 @@ namespace SMAModbusConnector.TestConsole
             var ipSunnyBoyStorage = IPAddress.Parse("192.168.2.62");
 
             // 2. Create a connector and add the two devices
-            var connector = new Connector();
+            var connector = new Connector
+            {
+                DataChangeIntervalInSeconds = 3
+            };
             connector.TryRegisterDevice(3, ipSunnyTripower, out var sunnyTripowerId);
             connector.TryRegisterDevice(3, ipSunnyBoyStorage, out var sunnyBoyStorageId);
 
@@ -31,28 +34,16 @@ namespace SMAModbusConnector.TestConsole
 
             var powerGridFeedIn =
                 connector.GetDataForAddress(sunnyTripowerId, RegisterAddresses.Register_PowerGridFeedInInW_30867);
+            var powerGridFeedIn2 =
+                connector.GetDataForAddress(sunnyTripowerId, RegisterAddresses.Register_ACActivePowerAcrossAllPhasesInW_30775);
+            var powerGridFeedIn3 =
+                connector.GetDataForAddress(sunnyTripowerId, RegisterAddresses.Register_PowerGridReferenceInW_30865);
 
-            // -> Calculating the battery power
-
-            var powerInKw = (double) batteryCurrentInA.Value * (double) batteryVoltageInV.Value;
-            if (betriebsstatus.Value.ToString() == "2293")
-            {
-                powerInKw = powerInKw * -1;
-            }
-
-            connector.AddRegisterAddressForDataChanges(sunnyBoyStorageId,
-                RegisterAddresses.Register_BatteryChargeInPercent_30845,
-                RegisterAddresses.Register_BatteryCapacityInPercent_30847,
-                RegisterAddresses.Register_BatteryTemperatureInC_30849,
-                RegisterAddresses.Register_BatteryVoltageInV_30851,
-                RegisterAddresses.Register_NumberOfFullChargesOfTheBattery_31069);
-
-            // 5. Start data change
-
-            connector.StartDataChange((deviceId, result) => { Console.WriteLine(result.FriendlyDescription); });
-
-            var mre = new ManualResetEvent(false);
-            mre.WaitOne();
+            Console.WriteLine(powerGridFeedIn.FriendlyDescription);
+            Console.WriteLine(powerGridFeedIn2.FriendlyDescription);
+            Console.WriteLine(powerGridFeedIn3.FriendlyDescription);
+            
+            Console.ReadLine();
         }
     }
 }
