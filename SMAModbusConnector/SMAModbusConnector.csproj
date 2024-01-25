@@ -8,8 +8,13 @@
         <Authors>Klaus Moster</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>A Modbus Connector for SMA devices</Description>
-        <PackageVersion>1.6.0</PackageVersion>
+        <PackageVersion>1.7.0</PackageVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="FluentModbus" Version="5.0.3" />
