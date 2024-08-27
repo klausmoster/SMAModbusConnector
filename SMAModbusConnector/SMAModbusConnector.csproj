@@ -1,18 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>SMAModbusConnector</AssemblyName>
         <RootNamespace>SMAModbusConnector</RootNamespace>
         <Title>SMA Modbus Connector</Title>
         <Authors>Klaus Moster</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>A Modbus Connector for SMA devices</Description>
-        <PackageVersion>1.6.0</PackageVersion>
+        <PackageVersion>1.7.0</PackageVersion>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentModbus" Version="5.0.2" />
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentModbus" Version="5.2.0" />
     </ItemGroup>
 
     <ItemGroup>
