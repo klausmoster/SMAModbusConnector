@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Net;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
-using SMAModbusConnector.Exceptions;
 using SMAModbusConnector.ModbusConnection;
 using SMAModbusConnector.Models;
 using SMAModbusConnector.RegisterRead;
